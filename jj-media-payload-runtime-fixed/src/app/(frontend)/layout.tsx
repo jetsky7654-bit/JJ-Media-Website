@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Footer } from '@/components/site/Footer'
+import { ExperienceLayer } from '@/components/site/ExperienceLayer'
 import { Header } from '@/components/site/Header'
 import { JsonLd } from '@/components/site/JsonLd'
 import { MobileStickyCTA } from '@/components/site/MobileStickyCTA'
@@ -25,6 +26,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
   const [settings, navigation] = await Promise.all([getGlobal('site-settings'), getGlobal('navigation')])
   return <html lang="de">
     <body>
+      <ExperienceLayer/>
       <JsonLd data={organizationJSONLD()} />
       <Header navigation={navigation}/>
       <main id="main" className="site-main">{children}</main>

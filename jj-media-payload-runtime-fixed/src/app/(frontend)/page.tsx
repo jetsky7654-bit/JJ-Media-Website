@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { FAQAccordion } from '@/components/site/FAQAccordion'
+import { HeroSpatial } from '@/components/site/HeroSpatial'
 import { TestimonialSlider } from '@/components/site/TestimonialSlider'
 import { UGCShowcase } from '@/components/site/UGCShowcase'
 import { getCollection } from '@/lib/cms'
@@ -53,6 +54,7 @@ export default async function Home() {
         </div>
         <div className="growth-system reveal" aria-label="JJ-Media Growth System">
           <div className="growth-system-head"><span className="eyebrow">JJ Growth System</span><b>01—05</b></div>
+          <HeroSpatial/>
           <div className="growth-card active"><span>01</span><div><strong>Analyse</strong><small>Erkennen, was bremst</small></div><i>●</i></div>
           <div className="growth-card"><span>02</span><div><strong>Strategie</strong><small>Positionierung mit Richtung</small></div><i>↗</i></div>
           <div className="growth-card"><span>03</span><div><strong>Content & UGC</strong><small>Aufmerksamkeit und Vertrauen</small></div><i>▶</i></div>
