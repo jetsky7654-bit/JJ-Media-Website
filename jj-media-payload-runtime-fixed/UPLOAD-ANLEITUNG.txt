@@ -1,0 +1,19 @@
+JJ-MEDIA – FEHLENDE DATEIEN NACHLADEN
+
+1. Diese ZIP auf dem PC entpacken.
+2. In GitHub diesen Ordner öffnen:
+   jj-media-payload-runtime-fixed
+3. Add file -> Upload files
+4. Den KOMPLETTEN INHALT dieses Patch-Ordners in das Upload-Feld ziehen:
+   - src
+   - tsconfig.json
+   - vercel.json
+   - .npmrc
+5. Bei Konflikten vorhandene Dateien beibehalten/ersetzen lassen.
+6. Commit changes anklicken.
+7. In Vercel ein neues Deployment vom aktuellen GitHub-Commit starten.
+8. Build cache beim ersten Versuch deaktivieren.
+
+Wichtig:
+Die Dateien müssen innerhalb von jj-media-payload-runtime-fixed landen.
+Nicht einen zusätzlichen Ordner jj-media-missing-files-patch im Repository anlegen.
