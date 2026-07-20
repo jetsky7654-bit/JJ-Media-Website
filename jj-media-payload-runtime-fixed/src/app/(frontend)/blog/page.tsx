@@ -1,0 +1,7 @@
+import Link from 'next/link'
+import { getCollection } from '@/lib/cms'
+import { fallbackPosts } from '@/lib/fallback'
+import { buildMetadata } from '@/lib/seo'
+export const revalidate=3600
+export const metadata=buildMetadata({title:'Social Media Insights & Fachartikel',description:'Praxisnahe Fachartikel zu Social-Media-Strategie, Content Creation, Reels, Meta Ads und digitaler Markenführung.',path:'/blog'})
+export default async function Blog(){const data=await getCollection('posts',{sort:'-publishedAt',where:{_status:{equals:'published'}}});const posts=data.length?data:fallbackPosts;return <><header className="hero"><div className="container hero-grid"><div className="hero-copy"><div className="eyebrow reveal">Insights</div><h1 className="display reveal"><span>Wissen für</span><span className="offset"><em>mehr Wirkung</em></span></h1><div className="hero-bottom reveal"><p>Fundierte, verständliche und direkt umsetzbare Inhalte rund um Social Media, Content und Performance.</p></div></div></div></header><section className="section"><div className="container"><div className="post-grid">{posts.map((post:any)=><Link className="post-card reveal" href={`/blog/${post.slug}`} key={post.id||post.slug}><div><div className="post-meta"><span>{post.category||'Social Media'}</span><span>{post.publishedAt?new Date(post.publishedAt).toLocaleDateString('de-DE'):''}</span></div><h3>{post.title}</h3><p>{post.excerpt}</p></div><span>Artikel lesen ↗</span></Link>)}</div></div></section></>}

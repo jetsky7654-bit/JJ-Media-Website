@@ -1,0 +1,2 @@
+import type { MetadataRoute } from 'next'
+export default function robots():MetadataRoute.Robots{const base=process.env.NEXT_PUBLIC_SERVER_URL||'https://www.jj-media-design.de';return{rules:[{userAgent:'*',allow:'/',disallow:['/admin/','/api/']},{userAgent:'OAI-SearchBot',allow:'/'},{userAgent:'ChatGPT-User',allow:'/'},{userAgent:'Google-Extended',allow:'/'}],sitemap:`${base.replace(/\/$/,'')}/sitemap.xml`,host:base}}

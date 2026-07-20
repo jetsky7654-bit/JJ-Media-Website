@@ -1,0 +1,3 @@
+import { buildMetadata } from '@/lib/seo'
+export const metadata=buildMetadata({title:'Impressum',description:'Impressum der Website JJ-Media.',path:'/impressum',noIndex:true})
+export default function Impressum(){return <article className="legal"><div className="eyebrow">Rechtliches</div><h1>Impressum</h1><p><strong>Angaben gemäß § 5 DDG</strong></p><p>JJ-Media<br/>Jessica Just<br/>Anschrift vor Veröffentlichung ergänzen</p><p>E-Mail: <a href="mailto:service@jj-media.info">service@jj-media.info</a></p><h2>Verantwortlich für den Inhalt</h2><p>Jessica Just, Anschrift wie oben.</p><h2>Hinweis</h2><p>Diese Vorlage muss vor dem Livegang mit den vollständigen rechtlichen Unternehmensangaben ergänzt und anwaltlich geprüft werden.</p></article>}

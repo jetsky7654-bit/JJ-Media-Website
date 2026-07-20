@@ -1,0 +1,2 @@
+import Link from 'next/link'
+export default function NotFound(){return <section className="hero"><div className="container hero-grid"><div className="hero-copy"><div className="eyebrow">404</div><h1 className="display"><span>Diese Seite</span><span className="offset"><em>gibt es nicht.</em></span></h1><div className="hero-bottom"><p>Zurück zur Startseite und weiter zu Social Media mit Wirkung.</p><Link className="btn btn-coral" href="/">Zur Startseite ↗</Link></div></div></div></section>}

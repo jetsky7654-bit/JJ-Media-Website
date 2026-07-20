@@ -1,0 +1,15 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/site/JsonLd'
+import { RichTextContent } from '@/components/site/RichTextContent'
+import { getBySlug } from '@/lib/cms'
+import { fallbackCases } from '@/lib/fallback'
+import { buildMetadata } from '@/lib/seo'
+
+export const revalidate=3600
+export const dynamicParams=true
+async function getCase(slug:string){return await getBySlug('case-studies',slug)||fallbackCases.find(c=>c.slug===slug)||null}
+export async function generateStaticParams(){return fallbackCases.map(c=>({slug:c.slug}))}
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const item:any=await getCase(slug);if(!item)return{};return buildMetadata({title:item.metaTitle||`${item.title} – Case Study`,description:item.metaDescription||item.excerpt,path:`/case-studies/${slug}`,image:item.image||'/assets/insta-4.webp'})}
+export default async function CasePage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const item:any=await getCase(slug);if(!item)notFound();const schema={'@context':'https://schema.org','@type':'CreativeWork',name:item.title,description:item.excerpt,creator:{'@type':'Organization',name:'JJ-Media'},about:item.client,url:`${process.env.NEXT_PUBLIC_SERVER_URL||'https://www.jj-media-design.de'}/case-studies/${slug}`};return <><JsonLd data={schema}/><header className="hero"><div className="container hero-grid"><div className="hero-copy"><div className="eyebrow reveal">Case Study · {item.client}</div><h1 className="display reveal"><span>{item.title}</span></h1><div className="hero-bottom reveal"><p>{item.excerpt}</p><Link className="btn btn-coral" href="/kontakt">Ähnliches Projekt anfragen ↗</Link></div></div></div></header><section className="section"><div className="container"><div className="article-shell" style={{paddingTop:0}}>{item.metrics?.length?<div className="case-metrics">{item.metrics.map((m:any,i:number)=><div className="case-metric" key={i}><strong>{m.value}</strong><span>{m.label}</span></div>)}</div>:null}{item.challenge?<><h2>Die Herausforderung</h2><RichTextContent data={item.challenge}/></>:<div className="article-content"><h2>Die Herausforderung</h2><p>Die Marke benötigte einen klaren visuellen Auftritt und Content, der nicht nur Reichweite erzeugt, sondern die Positionierung verständlich macht.</p></div>}{item.solution?<><h2>Die Lösung</h2><RichTextContent data={item.solution}/></>:<div className="article-content"><h2>Die Lösung</h2><p>JJ-Media entwickelte ein modulares Content-System aus wiedererkennbaren Formaten, einer klaren Botschaftshierarchie und plattformgerechter visueller Umsetzung.</p></div>}{item.result?<><h2>Das Ergebnis</h2><RichTextContent data={item.result}/></>:<div className="article-content"><h2>Das Ergebnis</h2><p>Ein konsistenter Markenauftritt, schnellere Content-Produktion und eine deutlich klarere Verbindung zwischen Aufmerksamkeit, Vertrauen und Conversion.</p></div>}</div></div></section></>}
