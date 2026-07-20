@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'https://www.jj-media-design.de'),
   title: { default: 'JJ-Media – Strategie, Content, UGC & Social Ads', template: '%s | JJ-Media' },
   description: 'JJ-Media verbindet Analyse, Social-Media-Strategie, Reels, UGC und Ads zu einem System, das Aufmerksamkeit in Vertrauen und Kunden verwandelt.',
+  openGraph: {
+    type: 'website',
+    locale: 'de_DE',
+    siteName: 'JJ-Media',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'JJ-Media – Social Media mit System' }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/og.png'] },
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {

@@ -6,7 +6,7 @@ export function buildMetadata({
   title,
   description,
   path = '',
-  image = '/assets/insta-5.webp',
+  image = '/og.png',
   noIndex = false,
   canonical,
 }: {
