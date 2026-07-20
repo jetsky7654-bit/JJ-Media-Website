@@ -64,3 +64,17 @@ Body:
 - E-Mail-Benachrichtigungen für neue Leads
 - Produktions-Storage für Uploads
 - Search Console, Bing Webmaster Tools und Analytics
+
+## Premium Conversion Update 2026
+
+Das Projekt enthält jetzt zusätzlich:
+
+- Analyse & Audit
+- Strategie & Positionierung
+- Content, Reels & UGC
+- Social Ads & Creative Testing
+- Reise- & Tourismus-Spezialisierung
+- Premium-Kundenstimmen-Seite
+- Mobile Sticky-CTA und erweitertes Qualifizierungsformular
+
+Details und Deployment-Hinweise stehen in `PREMIUM-UPDATE.md`.
