@@ -4,10 +4,14 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 
 export function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [auditScore, setAuditScore] = useState<number | null>(null)
+  const [requestType, setRequestType] = useState<string | null>(null)
   const interestRef = useRef<HTMLSelectElement>(null)
 
   useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get('interesse')
+    const params = new URLSearchParams(window.location.search)
+    const requested = params.get('interesse')
+    const score = Number(params.get('score'))
     const values: Record<string, string> = {
       audit: 'Social Growth Score auswerten',
       report: 'DACH Social Report',
@@ -16,6 +20,8 @@ export function ContactForm() {
       growth: 'Social Ads & Creative Testing',
     }
     if (requested && values[requested] && interestRef.current) interestRef.current.value = values[requested]
+    setRequestType(requested)
+    if (requested === 'audit' && Number.isFinite(score) && score >= 0 && score <= 100) setAuditScore(Math.round(score))
   }, [])
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -25,12 +31,13 @@ export function ContactForm() {
     const form = new FormData(event.currentTarget)
     const context = [
       `Leistung: ${form.get('interest') || 'Noch offen'}`,
+      auditScore !== null ? `Social Growth Score: ${auditScore}/100` : null,
       `Branche: ${form.get('industry') || 'Nicht angegeben'}`,
       `Website: ${form.get('website') || 'Nicht angegeben'}`,
       `Start: ${form.get('start') || 'Noch offen'}`,
       '',
       String(form.get('message') || ''),
-    ].join('\n')
+    ].filter(Boolean).join('\n')
     const data = {
       name: form.get('name'),
       email: form.get('email'),
@@ -38,7 +45,7 @@ export function ContactForm() {
       phone: form.get('phone'),
       budget: form.get('budget'),
       message: context,
-      source: 'Website · Potenzialanalyse',
+      source: auditScore !== null ? `Website · Social Growth Score · ${auditScore}/100` : 'Website · Potenzialanalyse',
       consent: true,
     }
 
@@ -59,9 +66,10 @@ export function ContactForm() {
   return (
     <form className="contact-form premium-form" onSubmit={submit}>
       <div className="form-intro">
-        <span className="eyebrow">Projektcheck · ca. 2 Minuten</span>
-        <p>Je konkreter die Ausgangslage, desto hilfreicher kann Jessicas Ersteinschätzung sein.</p>
+        <span className="eyebrow">{requestType === 'audit' ? 'Persönliche Score-Auswertung' : 'Projektcheck · ca. 2 Minuten'}</span>
+        <p>{requestType === 'audit' ? 'Dein Ergebnis ist bereits übernommen. Ergänze nur noch den Kontext, damit Jessica die Zahl sinnvoll für deine Marke einordnen kann.' : 'Je konkreter die Ausgangslage, desto hilfreicher kann Jessicas Ersteinschätzung sein.'}</p>
       </div>
+      {auditScore !== null ? <div className="audit-form-context" aria-live="polite"><div><strong>{auditScore}</strong><span>/ 100</span></div><div><small>Dein Social Growth Score</small><b>{auditScore < 45 ? 'Fundament zuerst' : auditScore < 75 ? 'Systematisieren' : 'Skalieren'}</b><p>Dieser Wert wird automatisch zusammen mit deiner Anfrage übermittelt.</p></div></div> : null}
       <div className="form-row">
         <div><label htmlFor="name">Name *</label><input autoComplete="name" id="name" name="name" required/></div>
         <div><label htmlFor="email">E-Mail *</label><input autoComplete="email" id="email" name="email" required type="email"/></div>
@@ -109,12 +117,12 @@ export function ContactForm() {
           </select>
         </div>
       </div>
-      <div><label htmlFor="message">Was soll sich konkret verändern? *</label><textarea id="message" name="message" placeholder="Wo stehst du aktuell, was bremst und welches Ergebnis wäre für dich wertvoll?" required rows={6}/></div>
+      <div><label htmlFor="message">{requestType === 'audit' ? 'Wo wünschst du dir die genauere Einordnung? *' : 'Was soll sich konkret verändern? *'}</label><textarea id="message" name="message" placeholder={requestType === 'audit' ? 'Welche Dimension fühlt sich aktuell am schwächsten an? Was möchtest du mit Social Media konkret erreichen?' : 'Wo stehst du aktuell, was bremst und welches Ergebnis wäre für dich wertvoll?'} required rows={6}/></div>
       <div className="form-row">
         <div><label htmlFor="phone">Telefon (optional)</label><input autoComplete="tel" id="phone" name="phone"/></div>
       </div>
       <label className="consent-row"><input required type="checkbox"/> <span>Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu. Details stehen in der <a href="/datenschutz">Datenschutzerklärung</a>.</span></label>
-      <button className="btn btn-coral btn-large" disabled={status === 'sending'}>{status === 'sending' ? 'Wird sicher gesendet …' : 'Kostenlose Ersteinschätzung anfragen ↗'}</button>
+      <button className="btn btn-coral btn-large" disabled={status === 'sending'}>{status === 'sending' ? 'Wird sicher gesendet …' : requestType === 'audit' ? 'Score persönlich auswerten lassen ↗' : 'Kostenlose Ersteinschätzung anfragen ↗'}</button>
       <div className="form-reassurance"><span>✓ Persönliche Prüfung</span><span>✓ Keine Verkaufsschleife</span><span>✓ Vertrauliche Behandlung</span></div>
       {status === 'success' ? <div className="form-status success">Danke! Jessica prüft deine Angaben und meldet sich persönlich.</div> : null}
       {status === 'error' ? <div className="form-status error">Die Anfrage konnte nicht gesendet werden. Bitte schreibe direkt an service@jj-media.info.</div> : null}
