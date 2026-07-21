@@ -18,13 +18,13 @@ export function Header({ navigation }: { navigation?: any }) {
     <nav className="nav" aria-label="Hauptnavigation"><div className="container nav-inner">
       <Link className="logo" href="/"><span className="logo-mark">JJ</span><span>JJ—MEDIA</span></Link>
       <div className="nav-links">{items.map((item:any)=><Link key={item.href} href={item.href} aria-current={pathname===item.href?'page':undefined}>{item.label}</Link>)}</div>
-      <Link className="btn desktop" href={ctaHref}>{ctaLabel} <span>↗</span></Link>
+      <a className="btn desktop" href={ctaHref}>{ctaLabel} <span>↗</span></a>
       <button className="menu-btn" onClick={()=>setOpen(true)} aria-label="Menü öffnen" aria-expanded={open}>☰</button>
     </div></nav>
     <div className={`menu-overlay ${open?'open':''}`} aria-hidden={!open}>
       <button className="menu-close" onClick={()=>setOpen(false)} aria-label="Menü schließen">×</button>
       {items.map((item:any)=><Link key={item.href} href={item.href} onClick={()=>setOpen(false)}>{item.label}</Link>)}
-      <Link className="btn" href={ctaHref} onClick={()=>setOpen(false)}>{ctaLabel} ↗</Link>
+      <a className="btn" href={ctaHref} onClick={()=>setOpen(false)}>{ctaLabel} ↗</a>
     </div>
   </>
 }
