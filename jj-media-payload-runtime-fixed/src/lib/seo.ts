@@ -6,7 +6,7 @@ export function buildMetadata({
   title,
   description,
   path = '',
-  image = '/og.png',
+  image = '/og-growth-system.png',
   noIndex = false,
   canonical,
 }: {
@@ -24,7 +24,7 @@ export function buildMetadata({
     description,
     alternates: { canonical: url },
     robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },
-    openGraph: { title, description, url, siteName: 'JJ-Media', locale: 'de_DE', type: 'website', images: [{ url: imageURL, width: 1200, height: 630 }] },
+    openGraph: { title, description, url, siteName: 'JJ-Media', locale: 'de_DE', type: 'website', images: [{ url: imageURL, width: image === '/og-growth-system.png' ? 1743 : 1200, height: image === '/og-growth-system.png' ? 911 : 630 }] },
     twitter: { card: 'summary_large_image', title, description, images: [imageURL] },
   }
 }

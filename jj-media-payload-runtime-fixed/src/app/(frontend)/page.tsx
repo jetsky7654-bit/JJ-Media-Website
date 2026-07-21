@@ -8,6 +8,7 @@ import { homepageFAQs } from '@/lib/conversionContent'
 import { fallbackCases, fallbackPosts, fallbackTestimonials, mergeServicesWithCMS } from '@/lib/fallback'
 import { mediaURL } from '@/lib/media'
 import { buildMetadata } from '@/lib/seo'
+import { proofSlots } from '@/lib/siteContent'
 
 export const revalidate = 3600
 export const metadata = buildMetadata({
@@ -128,8 +129,22 @@ export default async function Home() {
         <div className="method-grid">
           {[['01','Verstehen','Angebot, Zielgruppe, Kundenfragen und aktuelle Daten bilden das Fundament.'],['02','Fokussieren','Positionierung, Botschaften und Content-Aufgaben werden klar definiert.'],['03','Produzieren','Reels, UGC, Posts und Creatives entstehen effizient und markengerecht.'],['04','Verteilen','Organic, Ads und Retargeting bringen die richtigen Inhalte vor die richtigen Menschen.'],['05','Verbessern','Aus Daten und Feedback entstehen bessere Hooks, Formate und Entscheidungen.']].map(([num,title,text]) => <article className="method-card reveal" key={num}><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}
         </div>
+        <div className="method-more reveal"><Link className="btn btn-coral" href="/methode">Das vollständige JJ Growth System <span>↗</span></Link></div>
       </div>
     </section>
+
+    <section className="section proof-system-section">
+      <div className="container">
+        <div className="split-heading"><div><span className="eyebrow reveal">Proof-System</span><h2 className="section-title reveal">Behauptungen werden ersetzt durch<br/><span className="serif">nachvollziehbare Beweise.</span></h2></div><p className="lead reveal">Die Struktur steht bereits. Sobald Freigaben vorliegen, lassen sich Kundenlogo, Ausgangslage, Creative und belegte Kennzahl zentral austauschen – ohne die Seite neu zu bauen.</p></div>
+        <div className="proof-grid">{proofSlots.map((proof) => <article className="proof-card reveal" key={proof.label}><div><span>{proof.label}</span><b>{proof.accent}</b></div><h3>{proof.title}</h3><p>{proof.text}</p><small>CONTENT SLOT · READY TO REPLACE</small></article>)}</div>
+      </div>
+    </section>
+
+    <section className="section resource-section"><div className="container"><div className="section-heading-row"><div><span className="eyebrow reveal">Kostenlose Ressourcen</span><h2 className="section-title reveal">Erst Klarheit gewinnen.<br/><span className="serif">Dann richtig investieren.</span></h2></div></div><div className="resource-grid">
+      <Link className="resource-card dark reveal" href="/social-media-audit"><span>INTERAKTIV · 3 MIN</span><h3>Social Growth Score</h3><p>Bewerte Positionierung, Content, Proof, Distribution und Conversion.</p><b>Score starten ↗</b></Link>
+      <Link className="resource-card coral reveal" href="/dach-social-report"><span>PLAYBOOK · DACH</span><h3>Social Report</h3><p>Fünf Kapitel für ein Social-System, das Menschen und Performance verbindet.</p><b>Report ansehen ↗</b></Link>
+      <Link className="resource-card light reveal" href="/methode"><span>FRAMEWORK · 5 PHASEN</span><h3>JJ Growth System</h3><p>Der vollständige Prozess von Diagnose bis zum Learning Loop.</p><b>Methode entdecken ↗</b></Link>
+    </div></div></section>
 
     <section className="testimonials section">
       <div className="container">

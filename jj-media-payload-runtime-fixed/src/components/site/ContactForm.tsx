@@ -1,9 +1,22 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 
 export function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const interestRef = useRef<HTMLSelectElement>(null)
+
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get('interesse')
+    const values: Record<string, string> = {
+      audit: 'Social Growth Score auswerten',
+      report: 'DACH Social Report',
+      strategie: 'Strategie & Positionierung',
+      content: 'Content, Reels & UGC',
+      growth: 'Social Ads & Creative Testing',
+    }
+    if (requested && values[requested] && interestRef.current) interestRef.current.value = values[requested]
+  }, [])
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -60,13 +73,15 @@ export function ContactForm() {
       <div className="form-row">
         <div>
           <label htmlFor="interest">Wobei brauchst du Unterstützung? *</label>
-          <select id="interest" name="interest" required>
+          <select id="interest" name="interest" ref={interestRef} required>
             <option value="">Bitte wählen</option>
             <option>Analyse & Audit</option>
             <option>Strategie & Positionierung</option>
             <option>Content, Reels & UGC</option>
             <option>Social Ads & Creative Testing</option>
             <option>Reise- & Tourismusmarketing</option>
+            <option>Social Growth Score auswerten</option>
+            <option>DACH Social Report</option>
             <option>Noch offen – Empfehlung gewünscht</option>
           </select>
         </div>

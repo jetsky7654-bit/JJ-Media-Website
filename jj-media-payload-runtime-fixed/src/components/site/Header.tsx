@@ -7,9 +7,12 @@ import { defaultNavigation } from '@/lib/fallback'
 export function Header({ navigation }: { navigation?: any }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const items = navigation?.items?.length ? navigation.items : defaultNavigation
-  const ctaLabel = navigation?.ctaLabel || 'Ich will mit dir arbeiten'
-  const ctaHref = navigation?.ctaHref || '/kontakt'
+  const configuredItems = navigation?.items?.length ? navigation.items : defaultNavigation
+  const items = configuredItems.some((item: any) => item.href === '/methode')
+    ? configuredItems
+    : [...configuredItems.slice(0, 1), { label: 'Methode', href: '/methode' }, ...configuredItems.slice(1)]
+  const ctaLabel = navigation?.ctaLabel || 'Social Score starten'
+  const ctaHref = navigation?.ctaHref || '/social-media-audit'
   return <>
     <a className="skip-link" href="#main">Zum Inhalt springen</a>
     <nav className="nav" aria-label="Hauptnavigation"><div className="container nav-inner">

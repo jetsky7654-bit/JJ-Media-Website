@@ -4,7 +4,7 @@ import { fallbackCases, fallbackPosts, fallbackServices } from '@/lib/fallback'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = (process.env.NEXT_PUBLIC_SERVER_URL || 'https://www.jj-media-design.de').replace(/\/$/, '')
-  const staticPaths = ['', '/ueber-mich', '/projekte', '/leistungen', '/reise-tourismus', '/kundenstimmen', '/blog', '/kontakt', '/impressum', '/datenschutz']
+  const staticPaths = ['', '/ueber-mich', '/projekte', '/leistungen', '/methode', '/social-media-audit', '/dach-social-report', '/reise-tourismus', '/kundenstimmen', '/blog', '/kontakt', '/impressum', '/datenschutz']
   const [postsData, servicesData, casesData] = await Promise.all([
     getCollection('posts', { where: { _status: { equals: 'published' } } }),
     getCollection('services', { where: { _status: { equals: 'published' } } }),

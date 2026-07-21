@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'de_DE',
     siteName: 'JJ-Media',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'JJ-Media – Social Media mit System' }],
+    images: [{ url: '/og-growth-system.png', width: 1743, height: 911, alt: 'JJ-Media – Social Media mit System' }],
   },
-  twitter: { card: 'summary_large_image', images: ['/og.png'] },
+  twitter: { card: 'summary_large_image', images: ['/og-growth-system.png'] },
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {

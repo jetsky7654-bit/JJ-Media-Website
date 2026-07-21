@@ -1,10 +1,10 @@
 export const defaultNavigation = [
   { label: 'Start', href: '/' },
-  { label: 'Über mich', href: '/ueber-mich' },
-  { label: 'Projekte', href: '/projekte' },
+  { label: 'Methode', href: '/methode' },
   { label: 'Leistungen', href: '/leistungen' },
+  { label: 'Projekte', href: '/projekte' },
   { label: 'Insights', href: '/blog' },
-  { label: 'Kontakt', href: '/kontakt' },
+  { label: 'Über mich', href: '/ueber-mich' },
 ]
 
 export const fallbackServices = [

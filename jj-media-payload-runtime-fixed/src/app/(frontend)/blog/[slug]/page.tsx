@@ -8,7 +8,20 @@ import { articleJSONLD, buildMetadata, faqJSONLD } from '@/lib/seo'
 
 export const revalidate=3600
 export const dynamicParams=true
-async function getPost(slug:string){return await getBySlug('posts',slug)||fallbackPosts.find(p=>p.slug===slug)||null}
+async function getPost(slug:string){
+  const fallback: any = fallbackPosts.find(p=>p.slug===slug)
+  const cms = await getBySlug('posts',slug)
+  if (!cms) return fallback || null
+  if (!fallback) return cms
+  return {
+    ...fallback,
+    ...cms,
+    sections: (cms as any).sections?.length ? (cms as any).sections : fallback.sections,
+    keyTakeaways: (cms as any).keyTakeaways?.length ? (cms as any).keyTakeaways : fallback.keyTakeaways,
+    faqs: (cms as any).faqs?.length ? (cms as any).faqs : fallback.faqs,
+    sources: (cms as any).sources?.length ? (cms as any).sources : fallback.sources,
+  }
+}
 export async function generateStaticParams(){return fallbackPosts.map(p=>({slug:p.slug}))}
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const post:any=await getPost(slug);if(!post)return{};return buildMetadata({title:post.metaTitle||post.title,description:post.metaDescription||post.excerpt,path:`/blog/${slug}`,noIndex:Boolean(post.noIndex),canonical:post.canonicalURL})}
 export default async function Article({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const post:any=await getPost(slug);if(!post)notFound();return <><JsonLd data={articleJSONLD(post)}/><JsonLd data={faqJSONLD(post.faqs)}/><article className="article-shell"><div className="eyebrow">{post.category||'Social Media Insight'}</div><h1>{post.title}</h1><p className="article-lead">{post.excerpt}</p><div className="post-meta"><span>{post.publishedAt?new Date(post.publishedAt).toLocaleDateString('de-DE'):''}</span><span>Von {post.author?.name||'Jessica Just'}</span></div>{post.keyTakeaways?.length?<div className="roi-card" style={{marginTop:'2rem'}}><div className="eyebrow">Das Wichtigste</div><ul>{post.keyTakeaways.map((x:any,i:number)=><li key={i}>{x.text}</li>)}</ul></div>:null}{post.sections?.length?<div className="article-content">{post.sections.map((section:any)=><section key={section.title}><h2>{section.title}</h2><p>{section.text}</p></section>)}</div>:post.content?<RichTextContent data={post.content}/>:<div className="article-content"><h2>Eine klare Strategie beginnt nicht mit dem nächsten Post</h2><p>Erfolgreiche Social-Media-Arbeit verbindet Unternehmensziel, Zielgruppenproblem, Markenbotschaft und ein wiederholbares Produktionssystem.</p></div>}{post.faqs?.length?<section><h2>Häufige Fragen</h2><div className="faq-list">{post.faqs.map((f:any,i:number)=><div className="faq-item" key={i}><h3>{f.question}</h3><p>{f.answer}</p></div>)}</div></section>:null}<aside className="article-cta"><span className="eyebrow">Nächster sinnvoller Schritt</span><h2>Aus Wissen wird Wirkung, wenn es zu deiner Marke passt.</h2><p>In der kostenlosen Potenzialanalyse klären wir, welcher Engpass zuerst gelöst werden sollte.</p><a className="btn btn-coral" href="/kontakt">Potenzial analysieren ↗</a></aside>{post.sources?.length?<section className="article-content"><h2>Quellen</h2><ol>{post.sources.map((s:any,i:number)=><li key={i}><a href={s.url} rel="nofollow noopener" target="_blank">{s.label}</a></li>)}</ol></section>:null}</article></>}

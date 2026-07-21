@@ -12,7 +12,18 @@ export const revalidate = 3600
 export const dynamicParams = true
 
 async function getCase(slug: string) {
-  return await getBySlug('case-studies', slug) || fallbackCases.find((item) => item.slug === slug) || null
+  const fallback = fallbackCases.find((item) => item.slug === slug)
+  const cms = await getBySlug('case-studies', slug)
+  if (!cms) return fallback || null
+  if (!fallback) return cms
+  return {
+    ...fallback,
+    ...cms,
+    challengeText: (cms as any).challengeText || fallback.challengeText,
+    solutionText: (cms as any).solutionText || fallback.solutionText,
+    resultText: (cms as any).resultText || fallback.resultText,
+    metrics: (cms as any).metrics?.length ? (cms as any).metrics : fallback.metrics,
+  }
 }
 export async function generateStaticParams() { return fallbackCases.map((item) => ({ slug: item.slug })) }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
